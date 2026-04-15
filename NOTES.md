@@ -25,3 +25,28 @@ Data quality:
 **What I'm intentionally NOT flagging:**
 - Net flow imbalance at individual stops — expected (origins board more, destinations alight more)
 - Missing days — routes legitimately don't run every day
+
+### Task 2 — Stop ridership summary + trend
+
+- `summarizeRouteStops(route)` returns one summary per declared stop (including stops with no observations).
+- Trend is a typed union designed for planner actionability, not just raw stats:
+  - `commuter-origin`
+  - `commuter-destination`
+  - `weekend-leisure`
+  - `balanced`
+  - `mixed`
+  - `insufficient-data`
+- Trend classification intentionally uses simple, explainable thresholds:
+  - weekend-dominant if weekend activity share is at least 1.3x weekday share
+  - weekday-dominant if weekday activity share is at least 1.3x weekend share
+  - strong directional flow if `abs(netFlow) / totalActivity >= 25%`
+  - balanced if net share <= 10% and day-to-day volatility is low
+- Confidence is derived from coverage (number of observed days), not raw volume, to avoid overconfidence on sparse data.
+
+### Domain typing policy
+
+- Domain model types in `types.ts` are immutable (`Readonly` + readonly arrays) and do not allow null/undefined.
+
+### If I had more time
+
+- I'd add a dedicated raw ingestion layer (`unknown` -> validated domain model) before business logic.

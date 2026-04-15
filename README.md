@@ -12,6 +12,11 @@ This repo is organized by feature area so each task's logic, types, and tests st
   - `validation/types.ts`: validation report/issue types
   - `validation/checks/*.ts`: focused rule modules
   - `validation/validateFeed.test.ts`: task-specific unit tests
+- `summaries/`: Task 2 implementation
+  - `summaries/index.ts`: `summarizeRouteStops()` exports
+  - `summaries/types.ts`: stop summary + trend types
+  - `summaries/stopRidershipSummary.ts`: stop aggregation + trend classification
+  - `summaries/stopRidershipSummary.test.ts`: task-specific unit tests
 - `NOTES.md`: assumptions/tradeoffs for submission
 
 ## Conventions For New Tasks
