@@ -22,6 +22,11 @@ This repo is organized by feature area so each task's logic, types, and tests st
   - `ranking/types.ts`: route health report/breakdown types
   - `ranking/routeHealth.ts`: scoring and ranking logic
   - `ranking/routeHealth.test.ts`: task-specific unit tests
+- `anomalies/`: Task 4 implementation
+  - `anomalies/index.ts`: `detectDayAnomalies()` exports
+  - `anomalies/types.ts`: day anomaly report/point types
+  - `anomalies/dayAnomalies.ts`: day-level percent-from-mean detector
+  - `anomalies/dayAnomalies.test.ts`: task-specific unit tests
 - `NOTES.md`: assumptions/tradeoffs for submission
 
 ## Conventions For New Tasks

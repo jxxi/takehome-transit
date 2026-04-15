@@ -4,3 +4,5 @@ export { summarizeRouteStops } from "./summaries";
 export type { StopRidershipSummary, StopTrend, TrendConfidence } from "./summaries";
 export { rankRoutesByHealth } from "./ranking";
 export type { RouteHealthBreakdown, RouteHealthReport } from "./ranking";
+export { detectDayAnomalies } from "./anomalies";
+export type { DayActivityPoint, DayAnomalyDirection, RouteDayAnomalyReport } from "./anomalies";

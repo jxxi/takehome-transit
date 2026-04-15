@@ -54,6 +54,18 @@ Data quality:
   - coverage (10%): share of stops classified as `insufficient-data`
 - Low-activity threshold is feed-relative (20th percentile) with a minimum floor so tiny stops are still penalized in small sample feeds.
 
+### Task 4 — Day-level anomaly detection
+
+- Scope is day-level only (not stop-level), per route.
+- Metric is total day activity (`boardings + alightings`) aggregated across the route.
+- Method is percent-from-mean:
+  - `percentDelta = (dayActivity - meanDayActivity) / meanDayActivity`
+  - anomaly if `abs(percentDelta) >= thresholdPct` (default 40%)
+- Output includes per-day totals/percent deltas and flagged anomalies with direction (`high`/`low`).
+- Edge-case handling:
+  - fewer than 2 observed days => no detection (`insufficient-days`)
+  - zero variance across days => no detection (`zero-variance`)
+
 ### Domain typing policy
 
 - Domain model types in `types.ts` are immutable (`Readonly` + readonly arrays) and do not allow null/undefined.
