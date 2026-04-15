@@ -30,6 +30,8 @@ describe("detectDayAnomalies", () => {
     expect(report?.anomalies).toHaveLength(1);
     expect(report?.anomalies[0]?.day).toBe("wed");
     expect(report?.anomalies[0]?.direction).toBe("high");
+    expect(report?.anomalies[0]?.explanation).toContain("above");
+    expect(report?.anomalies[0]?.operationalNote).toContain("crowding");
   });
 
   it("detects a low anomaly day", () => {
@@ -47,6 +49,8 @@ describe("detectDayAnomalies", () => {
     expect(report?.anomalies).toHaveLength(1);
     expect(report?.anomalies[0]?.day).toBe("mon");
     expect(report?.anomalies[0]?.direction).toBe("low");
+    expect(report?.anomalies[0]?.explanation).toContain("below");
+    expect(report?.anomalies[0]?.operationalNote).toContain("frequency adjustments");
   });
 
   it("returns no anomalies for a normal distribution at default threshold", () => {

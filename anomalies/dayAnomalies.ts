@@ -31,6 +31,31 @@ function getDirection(percentDeltaFromMean: number): DayAnomalyDirection {
   return percentDeltaFromMean >= 0 ? "high" : "low";
 }
 
+function buildAnomalyMessaging(input: {
+  day: DayOfWeek;
+  direction: DayAnomalyDirection;
+  percentDeltaFromMean: number;
+  thresholdPct: number;
+}): Pick<DayActivityPoint, "explanation" | "operationalNote"> {
+  const dayLabel = input.day.toUpperCase();
+  const deltaPct = Math.round(Math.abs(input.percentDeltaFromMean) * 100);
+  const thresholdPct = Math.round(input.thresholdPct * 100);
+
+  if (input.direction === "high") {
+    return {
+      explanation: `${dayLabel} activity is ${deltaPct}% above this route's typical day (threshold ${thresholdPct}%).`,
+      operationalNote:
+        "Expect higher crowding and dwell times; consider peak reinforcement or standby capacity if this pattern repeats.",
+    };
+  }
+
+  return {
+    explanation: `${dayLabel} activity is ${deltaPct}% below this route's typical day (threshold ${thresholdPct}%).`,
+    operationalNote:
+      "Check for disruptions, holidays, or demand shifts; consider temporary frequency adjustments if this pattern repeats.",
+  };
+}
+
 function hasZeroVariance(values: number[]): boolean {
   if (values.length < 2) {
     return true;
@@ -111,13 +136,24 @@ export function detectDayAnomalies(
         const rawPercentDelta = (entry.totalActivity - meanActivity) / meanActivity;
         const percentDeltaFromMean = round(rawPercentDelta);
         const isAnomaly = Math.abs(rawPercentDelta) >= percentThreshold;
+        const direction = isAnomaly ? getDirection(rawPercentDelta) : undefined;
+        const messaging =
+          isAnomaly && direction
+            ? buildAnomalyMessaging({
+                day: entry.day,
+                direction,
+                percentDeltaFromMean: rawPercentDelta,
+                thresholdPct: percentThreshold,
+              })
+            : {};
 
         return {
           day: entry.day,
           totalActivity: entry.totalActivity,
           percentDeltaFromMean,
           isAnomaly,
-          direction: isAnomaly ? getDirection(rawPercentDelta) : undefined,
+          direction,
+          ...messaging,
         };
       })
     );

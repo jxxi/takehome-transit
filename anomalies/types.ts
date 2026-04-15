@@ -9,6 +9,8 @@ export type DayActivityPoint = {
   percentDeltaFromMean: number;
   isAnomaly: boolean;
   direction?: DayAnomalyDirection;
+  explanation?: string;
+  operationalNote?: string;
 };
 
 export type RouteDayAnomalyReport = {
