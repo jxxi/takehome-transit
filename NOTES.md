@@ -39,9 +39,20 @@ Data quality:
 - Trend classification intentionally uses simple, explainable thresholds:
   - weekend-dominant if weekend activity share is at least 1.3x weekday share
   - weekday-dominant if weekday activity share is at least 1.3x weekend share
-  - strong directional flow if `abs(netFlow) / totalActivity >= 25%`
-  - balanced if net share <= 10% and day-to-day volatility is low
+  - strong directional flow (stop is clearly one-sided, not just a small difference) if `abs(netFlow) / totalActivity >= 25%`, where `netFlow = totalBoardings - totalAlightings` and `totalActivity = totalBoardings + totalAlightings`
+  - balanced if boardings and alightings stay close overall (`abs(netFlow) / totalActivity <= 10%`) and daily activity is fairly consistent (low volatility, measured via coefficient of variation)
 - Confidence is derived from coverage (number of observed days), not raw volume, to avoid overconfidence on sparse data.
+- `insufficient-data` is a coverage/confidence signal (not a low-ridership signal).
+
+### Task 3 — Route health ranking
+
+- `rankRoutesByHealth(routes)` returns ranked routes with a 0–100 score, reason strings, and a typed penalty breakdown.
+- Score uses weighted penalties across four dimensions:
+  - stability (40%): share of stops classified as `mixed`
+  - utilization (30%): share of stops below a low-activity threshold
+  - balance (20%): share of stops with extreme net-flow imbalance
+  - coverage (10%): share of stops classified as `insufficient-data`
+- Low-activity threshold is feed-relative (20th percentile) with a minimum floor so tiny stops are still penalized in small sample feeds.
 
 ### Domain typing policy
 

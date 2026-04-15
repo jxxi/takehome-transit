@@ -17,6 +17,11 @@ This repo is organized by feature area so each task's logic, types, and tests st
   - `summaries/types.ts`: stop summary + trend types
   - `summaries/stopRidershipSummary.ts`: stop aggregation + trend classification
   - `summaries/stopRidershipSummary.test.ts`: task-specific unit tests
+- `ranking/`: Task 3 implementation
+  - `ranking/index.ts`: `rankRoutesByHealth()` exports
+  - `ranking/types.ts`: route health report/breakdown types
+  - `ranking/routeHealth.ts`: scoring and ranking logic
+  - `ranking/routeHealth.test.ts`: task-specific unit tests
 - `NOTES.md`: assumptions/tradeoffs for submission
 
 ## Conventions For New Tasks
